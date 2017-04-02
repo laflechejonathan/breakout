@@ -14,11 +14,13 @@ def quit_check():
         sys.exit()
 
 
-def wait_for_enter():
-    while True:
+def wait_for_key(key):
+    while pygame.key.get_pressed()[key] != 0:
         quit_check()
-        if pygame.key.get_pressed()[pygame.K_RETURN] != 0:
-            break
+    while pygame.key.get_pressed()[key] == 0:
+        quit_check()
+    while pygame.key.get_pressed()[key] != 0:
+        quit_check()
 
 
 def show_game_over():
@@ -27,7 +29,7 @@ def show_game_over():
     text_position = ((const.SCREEN_WIDTH - game_over_text.get_width()) / 2, const.SCREEN_HEIGHT / 2)
     screen.blit(game_over_text, text_position)
     pygame.display.flip()
-    wait_for_enter()
+    wait_for_key(pygame.K_RETURN)
 
 
 def play_single_game():
@@ -37,6 +39,10 @@ def play_single_game():
 
     while True:
         quit_check()
+
+        # space bar pauses the game
+        if pygame.key.get_pressed()[pygame.K_SPACE] != 0:
+            wait_for_key(pygame.K_SPACE)
 
         if not all([
             paddle.interact(),
