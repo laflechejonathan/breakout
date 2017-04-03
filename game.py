@@ -13,6 +13,8 @@ def quit_check():
     if any(e.type == pygame.QUIT for e in pygame.event.get()):
         sys.exit()
 
+    if pygame.key.get_pressed()[pygame.K_q] != 0:
+        sys.exit()
 
 def wait_for_key(key):
     while pygame.key.get_pressed()[key] != 0:
