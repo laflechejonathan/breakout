@@ -23,13 +23,21 @@ def wait_for_key(key):
         quit_check()
 
 
-def show_game_over():
-    screen.fill(const.BLACK)
-    game_over_text = font.render("Game Over! Press [Enter] to try again.", 1, const.RED)
+def show_text(text, bg, fg):
+    screen.fill(bg)
+    game_over_text = font.render(text, 1, fg)
     text_position = ((const.SCREEN_WIDTH - game_over_text.get_width()) / 2, const.SCREEN_HEIGHT / 2)
     screen.blit(game_over_text, text_position)
     pygame.display.flip()
     wait_for_key(pygame.K_RETURN)
+
+
+def show_game_over():
+    show_text("Game Over! Press [Enter] to try again.", const.BLACK, const.RED)
+
+
+def show_victory():
+    show_text("Victory is yours! Press [Enter] to play again.", const.BLUE, const.BLACK)
 
 
 def play_single_game():
@@ -51,7 +59,10 @@ def play_single_game():
             breakout.collision_check(ball, paddle, brick_grid),
         ]):
             # game over
-            return
+            return False
+
+        if not brick_grid.brick_set:
+            return True
 
         screen.fill(const.BLACK)
         paddle.render(screen)
@@ -62,8 +73,10 @@ def play_single_game():
 
 def main_loop():
     while True:
-        play_single_game()
-        show_game_over()
+        if play_single_game():
+            show_victory()
+        else:
+            show_game_over()
 
 
 if __name__ == '__main__':
