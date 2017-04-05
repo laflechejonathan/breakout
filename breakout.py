@@ -24,6 +24,14 @@ class BrickGrid:
                 rect = geometry.Rect(brick_x, brick_y, const.BRICK_WIDTH, const.BRICK_HEIGHT)
                 self.brick_set.add(rect)
 
+        self.original_brick_count = len(self.brick_set)
+
+    def get_num_cleared(self):
+        return self.original_brick_count - len(self.brick_set)
+
+    def reset(self):
+        self.bullet_set = set()
+
     def render(self, screen):
         for b in self.brick_set:
             pygame.draw.rect(screen, const.GREEN, [b.x, b.y, b.width, b.height])
@@ -93,7 +101,7 @@ class Ball:
         self.speed = const.BALL_SPEED
         self.x = random.randint(0, const.SCREEN_WIDTH)
         self.y = const.SCREEN_HEIGHT - const.PADDLE_HEIGHT - const.PADDLE_SPACING - 4 * const.BALL_RADIUS
-        self.heading = (-0.5, -0.5)
+        self.heading = (random.choice([-0.5, 0.5]), -0.5)
         self.min_x = 0 + const.BALL_RADIUS
         self.max_x = const.SCREEN_WIDTH - const.BALL_RADIUS
         self.min_y = 0 + const.BALL_RADIUS
